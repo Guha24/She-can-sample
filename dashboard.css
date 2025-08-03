@@ -1,0 +1,157 @@
+body {
+  
+  background-color: black;
+  color: white;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.logo {
+  max-width: 180px;
+  max-height: 60px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.header {
+  background-color: rgb(3, 1, 22);
+  color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+}
+
+h1 {
+  color: #ff4b2b;
+  text-shadow: 1px 1px 4px #000;
+  font-size: 40px;
+}
+
+.main {
+  margin-top: 80px;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;  
+  gap: 30px;             
+  min-height: 100vh;    
+  margin-top: 100px;  
+  animation: fadeIn 1s ease-in;
+}
+
+h3 {
+  font-size: 38px;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #b700ff;
+  animation: slideIn 1s ease-out;
+  font-family: cursive;
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+.Referral, .Donations, .Rewards {
+   background-color: #111;   
+  border-radius: 12px;    
+  padding: 20px 40px;
+  text-align: center;       
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); 
+  width: 600px;                 
+  display: flex;
+  flex-direction: column;
+  align-items: center;         
+  justify-content: center; 
+}
+
+.Referral:hover, .Donations:hover, .Rewards:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+}
+
+.ref-title, 
+.don-title{
+  font-size: 35px;
+  font-weight: bold;
+  color: #ffdd57;
+  margin-bottom: 8px;
+}
+.reward-title {
+  font-size: 35px;
+  font-weight: bold;
+  color: #ffdd57;
+  margin-bottom: 8px;
+}
+
+.ref-code, .dont-amount {
+  font-size: 26px;
+  font-weight: bold;
+  color: #00ff99;
+  background-color: #1a1a1a;  /* dark box */
+  border: 1px solid #00ff99; /* neon green border */
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 255, 153, 0.2);
+
+}
+
+.rew-list p{
+  
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+
+}
+
+.logout{
+  padding: 10px;
+  background-color: #6200ee;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+
+
+.leaderBoard{
+  width:680px;
+  padding:10px;
+  background-color: #00ff37;
+  border:none;
+  border-radius: 10px;
+  margin-bottom: 50px;
+  cursor:pointer;
+}
+
+.leaderBoard:hover {
+  background-color: #00d92f; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+  transform: scale(1.02); 
+  transition: all 0.3s ease; 
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>She Can Foundation</title>
+    <link href="login.css" rel="stylesheet" >
+  </head>
+  <body>
+    <div class="header">
+      <img src="logo.jpg" class="logo" >
+      <h1>She Can Foundation</h1>
+      <div></div>
+    </div>
+    <div class="main">
+      <h3>FORGOT PASSWORD</h3>
+      <input class="username-box" placeholder="Username" >
+      <div class="password-container">
+        <input type="password" class="password-box toggle" placeholder="New Password">
+        <span class="toggle-eye"><img class="eye" src='invisible.png'></span>
+      </div>
+      <div class="password-container">
+        <input type="password" class="re-password-box toggle" placeholder="ReType New Password">
+        <span class="toggle-eye"><img class="eye" src='invisible.png'></span>
+      </div>
+      <button class="js-next">Change Password</button>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+      import { getDatabase, ref, get, child,update } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyDKoM_gCUpMILG-C-Bu9RlbIFyEZbc77Sw",
+        authDomain: "she-can-backend.firebaseapp.com",
+        databaseURL: "https://she-can-backend-default-rtdb.firebaseio.com",
+        projectId: "she-can-backend",
+        storageBucket: "she-can-backend.firebasestorage.app",
+        messagingSenderId: "728641966545",
+        appId: "1:728641966545:web:bf6386a4ba4913b16690f0",
+        measurementId: "G-LDD62TLW91"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db=getDatabase(app);
+
+
+      const toggleEyes = document.querySelectorAll(".toggle-eye");
+      const passwordInputs = document.querySelectorAll(".toggle");
+
+      toggleEyes.forEach((eyeIcon, index) => {
+        eyeIcon.addEventListener("click", () => {
+          const input = passwordInputs[index];
+          const currentType = input.getAttribute("type");
+
+          if (currentType === "password") {
+            input.setAttribute("type", "text");
+            eyeIcon.innerHTML = `<img class="eye" src='eye.png'>`;
+          } else {
+            input.setAttribute("type", "password");
+            eyeIcon.innerHTML = `<img class="eye" src='invisible.png'>`;
+          }
+        });
+      });
+
+
+      
+      document.querySelector('.js-next').addEventListener('click',()=>{
+        const username = document.querySelector(".username-box").value;
+        const password = document.querySelector(".password-box").value;
+        const repassword = document.querySelector(".re-password-box").value;
+        const dbRef=ref(db);
+        if(password === repassword & password!==""){
+          get(child(dbRef,`users/${username}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              update(ref(db,`users/${username}`),{
+                password:repassword
+              })
+              .then(()=>{
+                alert('Password changed successfully');
+                window.location.href='login.html';
+              })
+
+            }else{
+              alert("User not found!");
+            }
+          });
+        
+        }
+      })
+      
+
+    </script>
+  </body>
+</html>

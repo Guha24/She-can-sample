@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>She Can Foundation</title>
+    <link href="leaderboard.css" rel="stylesheet" >
+  </head>
+
+  <body>
+
+    <div class="header">
+      <img src="logo.jpg" class="logo" >
+      <h1>She Can Foundation</h1>
+      <button class="logout" >LogOut</button>
+    </div>
+
+    <h3>LeaderBoard</h3>
+    <div class="main">
+      <table class="leaderBoard-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Amount Raised</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+      
+    </div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+      import { getDatabase, ref, get, child, set } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyDKoM_gCUpMILG-C-Bu9RlbIFyEZbc77Sw",
+        authDomain: "she-can-backend.firebaseapp.com",
+        databaseURL: "https://she-can-backend-default-rtdb.firebaseio.com",
+        projectId: "she-can-backend",
+        storageBucket: "she-can-backend.firebasestorage.app",
+        messagingSenderId: "728641966545",
+        appId: "1:728641966545:web:bf6386a4ba4913b16690f0",
+        measurementId: "G-LDD62TLW91"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db=getDatabase(app);
+      const dbRef=ref(db);
+
+      get(child(dbRef, 'users')).then((snapshot)=>{
+        if(snapshot.exists()){
+          const userData=snapshot.val();
+          let amount=[];
+          for(let key in userData){
+            amount.push({
+              name:key,
+              amount:userData[key].amountRaised
+            });
+          }
+          console.log(amount);
+          amount.sort((a, b) => b.amount - a.amount);
+          const tbody = document.querySelector(".leaderBoard-table tbody");
+          tbody.innerHTML = "";
+
+          amount.forEach((user, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${user.name}</td>
+              <td>₹${user.amount}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        }else {
+          console.log("No data available");
+        }
+      });
+      document.querySelector('.logout').addEventListener('click',()=>{
+        window.location.href="login.html";
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>She Can Foundation</title>
+    <link href="login.css" rel="stylesheet" >
+  </head>
+  <body>
+    <div class="header">
+      <img src="logo.jpg" class="logo" >
+      <h1>She Can Foundation</h1>
+      <div></div>
+    </div>
+    
+    <div class="main">
+      <h3>NEW USER</h3>
+      <input class="username-box" placeholder="Username" >
+      <p class="text">*Username must starts with a lettter</p>
+      <input  class="password-box" placeholder="Password">
+      <p class="text">*Password should be of length 10+ with atleast on special character</p>
+      <button class="js-signup">SignUp</button>
+      <p class="text2">Login again with the same credentials</p>
+      
+    </div>
+    <script type=module >
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+      import { getDatabase, ref, get, child, set } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyDKoM_gCUpMILG-C-Bu9RlbIFyEZbc77Sw",
+        authDomain: "she-can-backend.firebaseapp.com",
+        databaseURL: "https://she-can-backend-default-rtdb.firebaseio.com",
+        projectId: "she-can-backend",
+        storageBucket: "she-can-backend.firebasestorage.app",
+        messagingSenderId: "728641966545",
+        appId: "1:728641966545:web:bf6386a4ba4913b16690f0",
+        measurementId: "G-LDD62TLW91"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db=getDatabase(app);
+
+      function signupUser() {
+        const username = document.querySelector(".username-box").value;
+        const password = document.querySelector(".password-box").value;
+        const dbRef=ref(db);
+        if (!/^[a-zA-Z]/.test(username)) {
+          alert("Username must start with a letter");
+          return;
+        }
+
+        if (password.length < 10 || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+          alert("Password must be 10+ characters and include special character");
+          return;
+        }
+
+        get(child(dbRef,`users/${username}`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            alert("Username already exists");
+            
+          } else {
+            const referralCode = "SCF" + Math.floor(100 + Math.random() * 900);
+            set(ref(db,"users/"+username),{
+              password: password,
+              referralCode: referralCode,
+              amountRaised: 0
+            });
+            alert("User registered successfully!");
+            window.location.href="login.html";
+          }
+        });
+      }
+
+      document.querySelector('.js-signup').addEventListener('click',()=>{
+        signupUser();
+      })
+    </script>
+  </body>
+</html>

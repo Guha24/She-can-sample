@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>She Can Foundation</title>
+    <link href="login.css" rel="stylesheet" >
+  </head>
+  <body>
+    <div class="header">
+      <img src="logo.jpg" class="logo" >
+      <h1>She Can Foundation</h1>
+      <div></div>
+    </div>
+    
+    <div class="main">
+      <h3>LOGIN</h3>
+      <input class="username-box" placeholder="Username" >
+      <div class="password-container">
+        <input type="password" class="password-box" placeholder="Password">
+        <span class="toggle-eye"><img class="eye" src='invisible.png'></span>
+      </div>
+      <button class="js-next">Next</button>
+      <button  onclick="window.location.href='forgot.html'" class="js-password">Forgot password?</button>
+      <p class="text1">*Neither Password nor Username is wrong</p>
+      <p class="new">New user? <a href="newUser.html">SignUp</a></p>
+
+      
+    </div>
+
+    <script type=module >
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+      import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyDKoM_gCUpMILG-C-Bu9RlbIFyEZbc77Sw",
+        authDomain: "she-can-backend.firebaseapp.com",
+        databaseURL: "https://she-can-backend-default-rtdb.firebaseio.com",
+        projectId: "she-can-backend",
+        storageBucket: "she-can-backend.firebasestorage.app",
+        messagingSenderId: "728641966545",
+        appId: "1:728641966545:web:bf6386a4ba4913b16690f0",
+        measurementId: "G-LDD62TLW91"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db=getDatabase(app);
+
+      function loginUser() {
+        const username = document.querySelector(".username-box").value;
+        const password = document.querySelector(".password-box").value;
+        const dbRef=ref(db);
+        get(child(dbRef,`users/${username}`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            if (userData.password === password) {
+              alert("Login successful!");
+              window.location.href=`dashboard.html?user=${username}`;
+            } else {
+                document.querySelector('.text1').style.display="";      
+            }
+          } else {
+            alert("Username does not exist");
+          }
+        });
+      }
+
+      document.querySelector('.js-next').addEventListener('click',()=>{
+        loginUser();
+      })
+      document.querySelector(".toggle-eye").addEventListener("click", ()=> {
+        const passwordInput = document.querySelector(".password-box");
+        const type = passwordInput.getAttribute("type");
+        const emoji=document.querySelector('.toggle-eye');
+
+        if (type === "password") {
+          passwordInput.setAttribute("type", "text");
+          emoji.innerHTML = `<img class="eye" src='eye.png'>`; 
+        } else {
+          passwordInput.setAttribute("type", "password");
+          emoji.innerHTML = `<img class="eye" src='invisible.png'>`;
+        }
+      });
+
+
+    </script>
+    
+  </body>
+</html>
